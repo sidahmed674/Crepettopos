@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrepettooPOS — الدليل الشامل للاستخدام</title>
+<style>
+  :root {
+    --navy:#16324f; --navy2:#1e4258; --blue:#2456a6; --gold:#d4af37;
+    --bg:#f2f4f7; --line:#dde3ea; --ink:#22303e;
+    --green:#1c7c54; --red:#b23a48; --orange:#c07a2b; --gray:#6b7684;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body {
+    font-family:'29LT Bukra','Segoe UI',Tahoma,Arial,sans-serif;
+    font-style:italic; font-weight:700; background:var(--bg); color:var(--ink); line-height:1.9;
+  }
+  .wrap { max-width:940px; margin:0 auto; padding:30px 18px 60px; }
+  #printBtn { position:fixed; top:16px; left:16px; z-index:9; background:var(--navy); color:#fff; border:none; cursor:pointer; padding:10px 18px; border-radius:12px; font-family:inherit; font-size:14px; }
+
+  .cover { background:linear-gradient(140deg,var(--navy),var(--navy2)); color:#fff; border-radius:20px; padding:52px 34px; text-align:center; margin-bottom:26px; }
+  .cover h1 { font-size:36px; margin-bottom:6px; }
+  .cover .en { letter-spacing:4px; color:var(--gold); font-size:15px; margin-bottom:18px; }
+  .cover p { opacity:.9; font-size:14px; max-width:600px; margin:0 auto; }
+  .cover .ver { margin-top:22px; display:inline-block; border:1px solid rgba(255,255,255,.35); padding:4px 16px; border-radius:99px; font-size:12px; }
+
+  nav.toc { background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px 24px; margin-bottom:26px; column-count:2; column-gap:34px; }
+  nav.toc b { color:var(--navy); display:block; margin-bottom:6px; font-size:17px; }
+  nav.toc ol { margin-right:18px; }
+  nav.toc li { margin-bottom:2px; break-inside:avoid; }
+  nav.toc a { color:var(--blue); text-decoration:none; font-size:14px; }
+  nav.toc a:hover { text-decoration:underline; }
+
+  section.card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:26px 26px 28px; margin-bottom:22px; break-inside:avoid; }
+  section.card > h2 { color:var(--navy); font-size:21px; margin-bottom:14px; padding-bottom:10px; border-bottom:3px solid var(--navy); display:flex; align-items:center; gap:10px; }
+  .chapnum { min-width:36px; height:36px; border-radius:11px; background:var(--navy); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+  h3.sub { color:var(--blue); font-size:16px; margin:16px 0 8px; }
+  p + p { margin-top:8px; }
+  ul.dash { margin:6px 22px 6px 0; }
+  ul.dash li { list-style:none; position:relative; padding-right:16px; margin-bottom:4px; font-size:14.5px; }
+  ul.dash li::before { content:'◆'; position:absolute; right:0; top:0; color:var(--blue); font-size:10px; line-height:2.6; }
+
+  .steps { counter-reset:st; margin-top:10px; }
+  .step { position:relative; background:var(--bg); border:1px solid var(--line); border-right:5px solid var(--blue); border-radius:12px; padding:13px 54px 13px 14px; margin-bottom:10px; font-size:14.5px; }
+  .step::before { counter-increment:st; content:counter(st); position:absolute; right:13px; top:12px; width:29px; height:29px; border-radius:9px; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .step b { color:var(--navy); }
+
+  table.tb { width:100%; border-collapse:collapse; margin-top:10px; font-size:13.5px; }
+  table.tb th, table.tb td { border:1px solid var(--line); padding:9px 11px; text-align:right; vertical-align:top; }
+  table.tb th { background:var(--navy); color:#fff; }
+  table.tb tr:nth-child(even) td { background:#f8fafc; }
+  .dot { display:inline-block; width:15px; height:15px; border-radius:50%; vertical-align:-2px; margin-left:7px; }
+
+  .note { background:#fff8e6; border:1px solid #eedc9a; border-right:5px solid var(--gold); border-radius:10px; padding:11px 15px; margin-top:13px; font-size:13.5px; }
+  .warn { background:#fdeeee; border:1px solid #eec3c3; border-right:5px solid var(--red); border-radius:10px; padding:11px 15px; margin-top:13px; font-size:13.5px; }
+  .ok { color:var(--green);} .bad{color:var(--red);} .org{color:var(--orange);} .blu{color:var(--blue);}
+
+  .mock { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:11px; margin-top:13px; }
+  .tbl-card { background:#fff; border-radius:13px; padding:13px 8px; text-align:center; border:1px solid var(--line); }
+  .tbl-card .n { font-size:23px; } 
+  .tbl-card .tag { display:block; margin:5px auto 0; width:fit-content; padding:1px 10px; border-radius:99px; font-size:11px; color:#fff; }
+  .t-available{box-shadow:inset 0 0 0 3px rgba(28,124,84,.35);} .t-available .tag{background:var(--green);}
+  .t-occupied{box-shadow:inset 0 0 0 3px rgba(178,58,72,.35);} .t-occupied .tag{background:var(--red);}
+
+  kbd { background:var(--navy); color:#fff; border-radius:6px; padding:1px 8px; font-size:12px; font-family:inherit; }
+  footer.sig { text-align:center; color:var(--gray); font-size:12.5px; margin-top:24px; }
+  @media print { body{background:#fff;} #printBtn{display:none;} .wrap{max-width:100%;padding:0;} section.card,nav.toc,.cover{border-color:#ccc;} }
+</style>
+</head>
+<body>
+<button id="printBtn" onclick="window.print()">🖨 طباعة / حفظ PDF</button>
+<div class="wrap">
+
+<!-- ═══════════ الغلاف ═══════════ -->
+<div class="cover">
+  <h1>الدليل الشامل للاستخدام</h1>
+  <div class="en">CREPETTOO&nbsp;POS</div>
+  <p>نظام نقاط بيع وإدارة مطاعم متكامل يعمل محلياً دون إنترنت — كل ما تحتاجه لتشغيل مطعمك من اليوم الأول: الطلبات، الطاولات، المطبخ، المبيعات، التقارير، والإعدادات.</p>
+  <span class="ver">الإصدار 1.0 · وثيقة رسمية للعميل</span>
+</div>
+
+<nav class="toc">
+  <b>محتويات الدليل</b>
+  <ol>
+    <li><a href="#ch1">تعريف بالنظام ومتطلباته</a></li>
+    <li><a href="#ch2">أول تشغيل وتسجيل الدخول</a></li>
+    <li><a href="#ch3">الواجهة الرئيسية واللغة</a></li>
+    <li><a href="#ch4">الأدوار والصلاحيات</a></li>
+    <li><a href="#ch5">الإعدادات وهوية المطعم</a></li>
+    <li><a href="#ch6">إدارة المستخدمين</a></li>
+    <li><a href="#ch7">قائمة الطعام</a></li>
+    <li><a href="#ch8">شاشة الطاولات</a></li>
+    <li><a href="#ch9">نقطة البيع POS</a></li>
+    <li><a href="#ch10">سيناريو عملي كامل من A إلى Z</a></li>
+    <li><a href="#ch11">شاشة المطبخ</a></li>
+    <li><a href="#ch12">المبيعات والاسترداد</a></li>
+    <li><a href="#ch13">التقارير</a></li>
+    <li><a href="#ch14">المشتريات والمصاريف</a></li>
+    <li><a href="#ch15">الطباعة</a></li>
+    <li><a href="#ch16">النسخ الاحتياطي وسلامة البيانات</a></li>
+    <li><a href="#ch17">حل المشكلات الشائعة</a></li>
+  </ol>
+</nav>
+
+<!-- ═══════════ 1 ═══════════ -->
+<section class="card" id="ch1">
+  <h2><span class="chapnum">١</span> تعريف بالنظام ومتطلباته</h2>
+  <p><b>CrepettooPOS</b> نظام نقاط بيع مصمم خصيصاً للمطاعم والمقاهي، يعمل بالكامل على جهاز الكاشير <u>بدون الحاجة إلى اتصال بالإنترنت</u>. جميع البيانات (الطلبات، المبيعات، القائمة) محفوظة بأمان داخل الجهاز نفسه.</p>
+  <ul class="dash">
+    <li><b>قائمة طعام جاهزة:</b> يأتي النظام مثبتاً مسبقاً بقائمة Crepettoo الكاملة — أكثر من 110 أصناف في 12 فئة (موهيتو، عصائر، ميلك شيك، مشروبات ساخنة، تشيز كيك، كريب سوشي، بان كيك، غوفرة، كريب فرنسية ومقرمشة، مينيو دبي...).</li>
+    <li><b>تحديث لحظي:</b> أي طلب أو تغيير حالة يظهر فوراً على جميع الشاشات المتصلة بنفس الجهاز دون تحديث يدوي.</li>
+    <li><b>طباعة:</b> فواتير الزبائن وتذاكر المطبخ على طابعات حرارية 58mm أو 80mm.</li>
+    <li><b>ثلاث لغات:</b> العربية والفرنسية والإنجليزية بضغطة زر.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 2 ═══════════ -->
+<section class="card" id="ch2">
+  <h2><span class="chapnum">٢</span> أول تشغيل وتسجيل الدخول</h2>
+  <div class="steps">
+    <div class="step"><b>شغّل البرنامج</b> من أيقونة سطح المكتب «CrepettooPOS». عند أول تشغيل يتم تجهيز قاعدة البيانات تلقائياً مع القائمة الجاهزة والطاولات الافتراضية.</div>
+    <div class="step"><b>ادخل للحساب الافتراضي:</b> اسم المستخدم <kbd>admin</kbd> وكلمة المرور <kbd>admin123</kbd>.</div>
+    <div class="step"><b>غيّر كلمة المرور فوراً</b> — سيطلبها النظام إجبارياً عند أول دخول. اختر كلمة قوية (أحرف كبيرة وصغيرة وأرقام) واحفظها في مكان آمن؛ هي مفتاح السيطرة الكاملة على النظام.</div>
+    <div class="step"><b>أنشئ حسابات الموظفين</b> (انظر الفصل ٦) قبل بدء العمل الفعلي، ولا تشارك حساب المدير مع الكاشيرات.</div>
+  </div>
+  <div class="note">🔒 إذا نسيت كلمة مرور المدير لا يمكن استعادتها من داخل البرنامج — احتفظ بها بعناية.</div>
+</section>
+
+<!-- ═══════════ 3 ═══════════ -->
+<section class="card" id="ch3">
+  <h2><span class="chapnum">٣</span> الواجهة الرئيسية واللغة</h2>
+  <p>بعد الدخول تجد <b>شريطاً جانبياً</b> به أقسام النظام، و<b>شريطاً علوياً</b> فيه الساعة، زر اللغة، وزر تسجيل الخروج.</p>
+  <table class="tb">
+    <tr><th style="width:32%">القسم</th><th>وظيفته</th><th style="width:22%">من يستخدمه</th></tr>
+    <tr><td><b>نقطة البيع</b></td><td>تسجيل الطلبات الجديدة (طاولات / تيك أواي)</td><td>الكاشير</td></tr>
+    <tr><td><b>الطاولات</b></td><td>متابعة حالة الطاولات وطلباتها ودفعها</td><td>الجميع</td></tr>
+    <tr><td><b>المطبخ</b></td><td>متابعة تحضير الطلبات صنفاً صنفاً</td><td>المطبخ</td></tr>
+    <tr><td><b>المبيعات</b></td><td>الفواتير المدفوعة والاسترداد</td><td>الكاشير+</td></tr>
+    <tr><td><b>قائمة الطعام</b></td><td>إدارة الفئات والأصناف والأسعار</td><td>مدير</td></tr>
+    <tr><td><b>المشتريات</b></td><td>تسجيل مصاريف الشراء اليومية</td><td>مدير</td></tr>
+    <tr><td><b>التقارير</b></td><td>إحصائيات الأداء والأرباح</td><td>مدير</td></tr>
+    <tr><td><b>المستخدمين</b></td><td>حسابات الموظفين والصلاحيات</td><td>مدير</td></tr>
+    <tr><td><b>الإعدادات</b></td><td>هوية المطعم، الطباعة، النسخ الاحتياطي</td><td>مدير</td></tr>
+  </table>
+  <div class="note">🌐 زر <b>«اللغة»</b> أعلى الشاشة يبدّل الواجهة كلها بين العربية / Français / English فوراً، حتى أسماء الأصناف في الفواتير تُطبع بلغة الطلب.</div>
+</section>
+
+<!-- ═══════════ 4 ═══════════ -->
+<section class="card" id="ch4">
+  <h2><span class="chapnum">٤</span> الأدوار والصلاحيات</h2>
+  <table class="tb">
+    <tr><th>العملية</th><th class="blu">مدير Admin</th><th class="org">مشرف Manager</th><th class="ok">كاشير Cashier</th></tr>
+    <tr><td>تسجيل وإرسال الطلبات</td><td>✓</td><td>✓</td><td>✓</td></tr>
+    <tr><td>الدفع وتحرير الطاولات</td><td>✓</td><td>✓</td><td>✓</td></tr>
+    <tr><td>إلغاء طلب مفتوح</td><td>✓</td><td>✓</td><td>✗</td></tr>
+    <tr><td>قراءة سجل العمليات (Audit)</td><td>✓</td><td>✓</td><td>✗</td></tr>
+    <tr><td>إدارة القائمة والأسعار</td><td>✓</td><td>✗</td><td>✗</td></tr>
+    <tr><td>المستخدمين والإعدادات والتقارير</td><td>✓</td><td>✗</td><td>✗</td></tr>
+  </table>
+  <p style="font-size:13.5px;margin-top:10px">يُحدَّد الدور عند إنشاء المستخدم ويمكن تعديله لاحقاً (الفصل ٦). امنح صلاحية «مدير» لأقل عدد ممكن من الأشخاص.</p>
+</section>
+
+<!-- ═══════════ 5 ═══════════ -->
+<section class="card" id="ch5">
+  <h2><span class="chapnum">٥</span> الإعدادات وهوية المطعم</h2>
+  <h3 class="sub">بيانات تظهر على كل فاتورة</h3>
+  <ul class="dash">
+    <li><b>اسم المطعم</b> (باللاتينية والعربية) + <b>العنوان</b> + <b>الهاتف</b>.</li>
+    <li><b>المعرّفات القانونية الجزائرية:</b> NIF · NIS · RC · NFL — تُطبع في رأس الفاتورة.</li>
+    <li><b>الشعار:</b> ارفع صورة الشعار (تظهر أعلى كل فاتورة)، مع إمكانية حذفه.</li>
+    <li><b>نص ختام الفاتورة</b> بالفرنسية والعربية (مثلاً: «شكراً لزيارتكم»).</li>
+    <li><b>العملة</b> (DZD افتراضياً) و<b>معدل الضريبة %</b>.</li>
+  </ul>
+  <h3 class="sub">إعدادات الطباعة</h3>
+  <ul class="dash">
+    <li><b>الطباعة التلقائية:</b> عند تفعيلها تُطبع الفاتورة فور تأكيد أي دفع مباشر من نقطة البيع.</li>
+    <li><b>حجم الورق:</b> اختر 80mm أو 58mm حسب طابعتك الحرارية.</li>
+  </ul>
+  <h3 class="sub">النسخ الاحتياطي</h3>
+  <ul class="dash">
+    <li><b>تصدير نسخة:</b> يحفظ ملف قاعدة بيانات كامل في المكان الذي تختاره (USB مثلًا).</li>
+    <li><b>استعادة نسخة:</b> تعيد النظام لحالة النسخة المحفوظة.</li>
+  </ul>
+  <div class="warn">⚠ الاستبدال بمحتوى النسخة الاحتياطية يمحو كل البيانات الحالية — تأكد قبل المتابعة. كما يقوم النظام بنسخة احتياطية يومية تلقائية في منتصف الليل داخل مجلد البيانات.</div>
+</section>
+
+<!-- ═══════════ 6 ═══════════ -->
+<section class="card" id="ch6">
+  <h2><span class="chapnum">٦</span> إدارة المستخدمين</h2>
+  <div class="steps">
+    <div class="step">افتح <b>«المستخدمين»</b> من القائمة الجانبية ثم اضغط <b>«إضافة»</b>.</div>
+    <div class="step">أدخل <b>اسم الموظف الكامل</b> (يظهر على الفواتير التي يسجلها)، و<b>اسم المستخدم</b> للدخول، وكلمة مرور مؤقتة.</div>
+    <div class="step">اختر <b>الدور</b>: مدير / مشرف / كاشير (جدول الفصل ٤).</div>
+    <div class="step">اضغط <b>حفظ</b> — يستطيع الموظف الدخول فوراً ويُنصحه بتغيير كلمة مروره من حسابه.</div>
+  </div>
+  <ul class="dash">
+    <li><b>التعديل ✏:</b> تغيير الاسم أو الدور أو تعيين كلمة مرور جديدة (اترك حقل كلمة المرور فارغاً للإبقاء على الحالية).</li>
+    <li><b>الحذف 🗑:</b> لا يمكن حذف نفسك ولا آخر مدير في النظام — حماية مدمجة من فقدان الوصول.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 7 ═══════════ -->
+<section class="card" id="ch7">
+  <h2><span class="chapnum">٧</span> قائمة الطعام</h2>
+  <h3 class="sub">الفئات</h3>
+  <ul class="dash">
+    <li>أضف فئة باسمها بثلاث لغات + ترتيب العرض + تفعيل/تعطيل.</li>
+    <li>لا يمكن حذف فئة تحتوي أصنافاً — أفرغها أولاً.</li>
+  </ul>
+  <h3 class="sub">الأصناف</h3>
+  <div class="steps">
+    <div class="step">اضغط <b>«إضافة صنف»</b>: الاسم بالعربية والفرنسية والإنجليزية، <b>السعر</b>، الفئة، وصف اختياري، <b>باركود</b> اختياري، وزمن تحضير.</div>
+    <div class="step"><b>التوفر:</b> مفتاح التفعيل يخفي الصنف عن نقطة البيع فوراً دون حذفه — مثالي لنفاد صنف مؤقتاً.</div>
+    <div class="step">عدّل أي صنف لاحقاً (سعر جديد يخص الطلبات الجديدة فقط — الطلبات القديمة تحفظ سعر بيعها الأصلي دائماً).</div>
+    <div class="step"><b>الحذف:</b> صنف لم يُطلب قط يُحذف نهائياً. أما صنف له طلبات سابقة فيُعطَّل تلقائياً حفاظاً على سجلك المالي مع تنبيه واضح.</div>
+  </div>
+  <div class="note">🔎 الباركود يسمح بإضافة الصنف للطلب بمسح ضوئي مستقبلاً ويضمن عدم تكرار الأصناف.</div>
+</section>
+
+<!-- ═══════════ 8 ═══════════ -->
+<section class="card" id="ch8">
+  <h2><span class="chapnum">٨</span> شاشة الطاولات</h2>
+  <p>قلب النظام اليومي. تظهر الطاولات كبطاقات مرقمة قابلة للفلترة حسب <b>المنطقة</b> (تراس / داخل / VIP...).</p>
+  <table class="tb">
+    <tr><th style="width:20%">اللون</th><th style="width:22%">الحالة</th><th>المعنى</th></tr>
+    <tr><td><span class="dot" style="background:var(--green)"></span><b class="ok">أخضر</b></td><td>متاحة</td><td>جاهزة لاستقبال زبون وطلب جديد</td></tr>
+    <tr><td><span class="dot" style="background:var(--red)"></span><b class="bad">أحمر</b></td><td>مشغولة</td><td>عليها طلب مفتوح غير مدفوع (يظهر رقمه على البطاقة)</td></tr>
+    <tr><td><span class="dot" style="background:var(--blue)"></span><b class="blu">أزرق</b></td><td>محجوزة</td><td>محجوزة مسبقاً لزبون قادم</td></tr>
+    <tr><td><span class="dot" style="background:var(--orange)"></span><b class="org">برتقالي</b></td><td>تنظيف</td><td>خارج الخدمة مؤقتاً</td></tr>
+  </table>
+  <div class="mock">
+    <div class="tbl-card t-available"><div class="n">1</div><span class="tag">متاحة</span></div>
+    <div class="tbl-card t-occupied"><div class="n">2</div><span class="tag">CRP-48231</span></div>
+  </div>
+  <h3 class="sub">قواعد ذكية يعمل بها النظام تلقائياً</h3>
+  <ul class="dash">
+    <li>اختيار الطاولة لطلب جديد ⇒ <b>تتحول حمراء فوراً وعلى كل الشاشات</b>.</li>
+    <li>تدفع طلبها ⇒ <b>تتحرر وحدها</b> وتعود خضراء.</li>
+    <li>يُلغى طلبها ⇒ تتحرر تلقائياً أيضاً (إن لم يكن عليها طلب آخر مفتوح).</li>
+    <li>الطلب مرتبط برقم الطاولة نفسها — <b>لن يظهر أبداً على طاولة أخرى</b> مهما كان عدد الشاشات.</li>
+  </ul>
+  <h3 class="sub">إضافة / تعديل طاولة (للمدير)</h3>
+  <p style="font-size:14px">زر <b>«إضافة طاولة»</b> أعلى الشاشة: رقم مميز إلزامي، اسم اختياري، سعة بالأشخاص، منطقة. التعديل والحذف من أيقونتي القلم والسلة على البطاقة (يُمنع حذف طاولة عليها طلب مفتوح).</p>
+  <h3 class="sub">تغيير حالة يدوي</h3>
+  <p style="font-size:14px">اضغط بطاقة طاولة <b>متاحة</b> فتظهر لوحة اختيار الحالة (متاحة/مشغولة/محجوزة/تنظيف) — مفيدة للحجز المسبق أو وضع تنظيف.</p>
+</section>
+
+<!-- ═══════════ 9 ═══════════ -->
+<section class="card" id="ch9">
+  <h2><span class="chapnum">٩</span> نقطة البيع POS</h2>
+  <h3 class="sub">مكونات الشاشة</h3>
+  <ul class="dash">
+    <li><b>بحث 🔍</b> فوري بالعربية أو الفرنسية عن أي صنف.</li>
+    <li><b>شرائط الفئات</b> أعلى الشبكة لتصفية الأصناف.</li>
+    <li><b>بطاقات الأصناف</b> — ضغطة واحدة تضيف للسلة.</li>
+    <li><b>السلة اليمنى:</b> كميات (+/−)، <b>خصم</b> لكل سطر، <b>ملاحظة</b> لكل صنف (بدون سكر، زيادة جبن...)، والمجاميع الحية.</li>
+    <li><b>مفتاح «تيك أواي»</b> لطلبات السفري (يخفي مربعات الطاولات).</li>
+  </ul>
+  <h3 class="sub">الزران السفليان — الفرق الجوهري</h3>
+  <table class="tb">
+    <tr><th style="width:30%">الزر</th><th>ماذا يفعل</th><th style="width:32%">متى تستخدمه</th></tr>
+    <tr><td><b class="blu">إرسال للطاولة</b></td><td>يسجل الطلب <u>بدون دفع</u> — الطاولة تبقى مشغولة والطلب مفتوحاً</td><td>زبون جالس سيدفع لاحقاً</td></tr>
+    <tr><td><b class="ok">دفع</b></td><td>يسجل ويسدد ويطبع دفعة واحدة</td><td>تيك أواي، أو زبون يدفع فوراً</td></tr>
+  </table>
+  <p style="font-size:13.5px;margin-top:8px">قبل الدفع تختار طريقة السداد: <b>نقدي 💵 / بطاقة 💳 / تحويل ⇄</b>.</p>
+</section>
+
+<!-- ═══════════ 10 ═══════════ -->
+<section class="card" id="ch10">
+  <h2><span class="chapnum">١٠</span> سيناريو عملي كامل من A إلى Z</h2>
+  <div class="steps">
+    <div class="step"><b>جلس زبون على الطاولة 5.</b> افتح «نقطة البيع»، تأكد أن تيك أواي مطفأ، واختر <b>طاولة 5</b> من المربعات الخضراء.</div>
+    <div class="step"><b>أضف الطلب:</b> موهيتو ×2 + كريب نوتيلا ×1 + ملاحظة «بدون مكسرات» على الكريب. راجع الإجمالي.</div>
+    <div class="step"><b>اضغط «إرسال للطاولة».</b> ستسمع إشعار النجاح وتفرغ السلة. افتح «الطاولات»: الطاولة 5 صارت <span class="bad">حمراء</span> ومعها رقم الطلب — وظهر الطلب تلقائياً في شاشة <b>المطبخ</b>.</div>
+    <div class="step"><b>طلب إضافي:</b> بعد ربع ساعة طلب الزبون عصيراً. من شاشة الطاولات اضغط بطاقة الطاولة 5 ← «إضافة صنف» ← عصير ← أغلق. المجموع تحدّث تلقائياً.</div>
+    <div class="step"><b>في المطبخ:</b> بعد التحضير يضغط الطاهي «جاهز ✓» ثم «تم التقديم» — الحالة تتحدث في كل الشاشات لحظياً.</div>
+    <div class="step"><b>المغادرة والدفع:</b> الزبون يقوم. افتح طاولته ← راجع الإجمالي النهائي ← اختر <b>نقدي</b> ← اضغط <b>«تأكيد الدفع»</b>.</div>
+    <div class="step"><b>النتيجة خلال ثوانٍ:</b> الطلب مدفوع ✓ · الفاتورة تُطبع تلقائياً بالباركود والشعار ✓ · الطاولة عادت <span class="ok">خضراء متاحة</span> ✓ · الفاتورة مسجلة في «المبيعات» والتقارير ✓.</div>
+    <div class="step">(اختياري) اجعل الطاولة «تنظيف» من لوحة الحالات حتى جهوزيتها.</div>
+  </div>
+</section>
+
+<!-- ═══════════ 11 ═══════════ -->
+<section class="card" id="ch11">
+  <h2><span class="chapnum">١١</span> شاشة المطبخ</h2>
+  <p>عرض مبسّط للطاهي: بطاقة لكل طلب نشط فيها <b>رقم الطاولة أو «خارج»</b> للتيك أواي، رقم الطلب، <b>الوقت المنقضي منذ الطلب</b>، وقائمة الأصناف بملاحظاتها بخط بارز.</p>
+  <table class="tb">
+    <tr><th>الحالة</th><th>المعنى</th><th>الانتقال بزر</th></tr>
+    <tr><td><span class="org">في الانتظار</span></td><td>وصل الطلب حديثاً</td><td>«بدء التحضير»</td></tr>
+    <tr><td><span class="blu">جاري التحضير</span></td><td>الطاهي يعمل عليه</td><td>«جاهز ✓»</td></tr>
+    <tr><td><span class="ok">جاهز</span></td><td>بانتظار التقديم</td><td>«تم التقديم»</td></tr>
+    <tr><td><span style="color:var(--gray)">تم التقديم</span></td><td>وصل للزبون</td><td>— (يخرج من اللوحة)</td></tr>
+  </table>
+  <div class="note">🔔 الطلبات الجديدة تظهر هنا ذاتياً بمجرد «إرسال للطاولة» — لا حاجة لطباعة تذكرة إلا إن أردت نسخة ورقية (تُطبع ضمن كل فاتورة).</div>
+</section>
+
+<!-- ═══════════ 12 ═══════════ -->
+<section class="card" id="ch12">
+  <h2><span class="chapnum">١٢</span> المبيعات والاسترداد</h2>
+  <ul class="dash">
+    <li><b>فلاتر فورية:</b> اليوم / هذا الأسبوع / هذا الشهر / الكل.</li>
+    <li><b>بطاقات ملخصة:</b> إجمالي المبيعات · عدد الفواتير · متوسط الفاتورة.</li>
+    <li><b>بحث برقم الفاتورة</b> مباشرة (CRP-XXXXX).</li>
+    <li><b>تفاصيل كل فاتورة:</b> الأصناف والكميات وطريقة الدفع والوقت والطاولة.</li>
+    <li><b>استرداد Refund:</b> لإرجاع فاتورة مدفوعة بخطأ (يظهر بعدها كـ«مسترد» ولا يُحسب ضمن الإيرادات). عملية حساسة — استخدمها بصلاحية الإدارة فقط.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 13 ═══════════ -->
+<section class="card" id="ch13">
+  <h2><span class="chapnum">١٣</span> التقارير</h2>
+  <ul class="dash">
+    <li><b>لوحة اليوم:</b> مبيعات اليوم، عدد الطلبات، الملغاة، أكثر الأصناف مبيعاً.</li>
+    <li><b>تقارير الفترات:</b> أسبوعية وشهرية لمتابعة نمو المطعم.</li>
+    <li><b>إغلاق اليوم (Close Day):</b> يجمّد أرقام اليوم في تقرير رسمي (إجمالي، نقدي، بطاقة، خصومات) كمرجع للتسوية مع الخزينة.</li>
+    <li>الإيرادات تحتسب <b>الفواتير المدفوعة فقط</b> — الملغاة والمستردة مستثناة تلقائياً.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 14 ═══════════ -->
+<section class="card" id="ch14">
+  <h2><span class="chapnum">١٤</span> المشتريات والمصاريف</h2>
+  <div class="steps">
+    <div class="step">افتح <b>«المشتريات»</b> ثم «إضافة مصروف».</div>
+    <div class="step">اكتب <b>الوصف</b> (شراء دقيق، فواكه...) و<b>المبلغ</b> وملاحظات اختيارية.</div>
+    <div class="step">تظهر إحصائيات اليوم فوراً: إجمالي المصاريف · عدد العمليات · المتوسط.</div>
+  </div>
+  <p style="font-size:14px">بهذا تعرف ربحك الحقيقي اليومي = مبيعات اليوم − مشتريات اليوم، دون دفاتر خارجية.</p>
+</section>
+
+<!-- ═══════════ 15 ═══════════ -->
+<section class="card" id="ch15">
+  <h2><span class="chapnum">١٥</span> الطباعة</h2>
+  <table class="tb">
+    <tr><th>المستند</th><th>متى يُطبع</th><th>المحتوى</th></tr>
+    <tr><td><b>فاتورة الزبون</b></td><td>عند «دفع» مباشر، أو عند «تأكيد الدفع» من الطاولة</td><td>الشعار، اسم المطعم، المعرفات القانونية، رقم الطلب + باركود، الطاولة، الكاشير، الأصناف، الخصومات، الإجمالي، طريقة الدفع، نص الختام</td></tr>
+    <tr><td><b>تذكرة المطبخ</b></td><td>ضمن نفس الطباعة (صفحة ثانية)</td><td>رقم الطلب والطاولة والأصناف بالكميات والملاحظات بخط كبير</td></tr>
+  </table>
+  <ul class="dash">
+    <li>اضبط حجم الورق من الإعدادات (80mm/58mm).</li>
+    <li>فوت فاتورة ولم تطبع؟ ابحث عنها في «المبيعات» — كل الفواتير محفوظة إلكترونياً.</li>
+    <li>النظام يعمل مع أي طابعة حرارية مثبتة على Windows وتُختار كطابعة افتراضية.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 16 ═══════════ -->
+<section class="card" id="ch16">
+  <h2><span class="chapnum">١٦</span> النسخ الاحتياطي وسلامة البيانات</h2>
+  <ul class="dash">
+    <li><b>تلقائي يومي:</b> النظام يأخذ نسخة داخلية كل منتصف الليل تلقائياً.</li>
+    <li><b>يدوي (موصى به أسبوعياً):</b> الإعدادات ← «تصدير النسخة الاحتياطية» ← احفظ الملف على USB أو قرص خارجي.</li>
+    <li><b>الاستعادة:</b> من نفس الشاشة — <span class="bad">تمحو البيانات الحالية وتستبدلها بالنسخة</span>؛ استخدمها عند تغيير الجهاز أو طارئ.</li>
+  </ul>
+  <div class="warn">⚠ جرّب الاستعادة مرة على جهاز تجريبي قبل أن تحتاجها فعلاً، وتأكد أن ملفات النسخ على USB تُفتح.</div>
+</section>
+
+<!-- ═══════════ 17 ═══════════ -->
+<section class="card" id="ch17">
+  <h2><span class="chapnum">١٧</span> حل المشكلات الشائعة</h2>
+  <table class="tb">
+    <tr><th style="width:36%">المشكلة</th><th>الحل</th></tr>
+    <tr><td>التطبيق لا يفتح / يغلق فوراً</td><td>تأكد ألا برنامجاً آخر يحتجز المنفذ الداخلي، ثم أعد التشغيل. إن تكررت، أعد تشغيل الجهاز.</td></tr>
+    <tr><td>«حدث خطأ» عند عملية ما</td><td>أعد المحاولة؛ غالباً انقطاع لحظي داخلي. إن استمرت على نفس العملية تواصل مع الدعم واذكر ما كانت العملية.</td></tr>
+    <tr><td>الطاولة لم تتغير حالتها</td><td>انتظر ثانية (التحديث تلقائي). الطلب مسجّل في النظام بالتأكيد — افتح شاشة الطاولات من جديد.</td></tr>
+    <tr><td>طاولة حمراء بلا زبون</td><td>افتحها: إن كان طلباً منسياً اطلب من المدير إلغاءه فتتحرر.</td></tr>
+    <tr><td>الطابعة لا تطبع</td><td>تحقق أنها الافتراضية في Windows وأن بها ورقاً؛ الفاتورة محفوظة ويمكن الرجوع لها من المبيعات.</td></tr>
+    <tr><td>صنف نفد مخزونه</td><td>قائمة الطعام ← أطفئ مفتاح «متاح» — سيختفي من نقطة البيع فوراً.</td></tr>
+    <tr><td>أريد حذف صنف طلبه الزبائن سابقاً</td><td>سيُعطَّل تلقائياً بدل الحذف حفاظاً على التقارير — وهذا مقصود وصحيح.</td></tr>
+    <tr><td>نسيت كلمة مرور موظف</td><td>المدير يفتح «المستخدمين» ← تعديل ← يضع كلمة مرور جديدة.</td></tr>
+    <tr><td>انقطعت الكهرباء أثناء العمل</td><td>لا شيء يُفقد — كل طلب أكدته حُفظ لحظته. أعد تشغيل البرنامج وتابع.</td></tr>
+  </table>
+</section>
+
+<footer class="sig">
+  CrepettooPOS · الدليل الشامل للاستخدام · الإصدار 1.0 · هذه الوثيقة تشرح النظام كاملاً ولاغية أخرى · للطباعة كـ PDF استخدم الزر أعلى الصفحة
+</footer>
+</div>
+</body>
+</html>

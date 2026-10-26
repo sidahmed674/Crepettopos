@@ -1,0 +1,11 @@
+node_modules
+dist
+dist-server
+release
+build
+.env
+prisma/*.db
+prisma/*.db-journal
+.DS_Store
+*.log
+.claude

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل استخدام نظام CrepettooPOS</title>
+<style>
+  @font-face {
+    font-family: '29LT Bukra';
+    src: local('29LT Bukra Bold Italic'), local('29LT Bukra');
+    font-weight: 700;
+    font-style: italic;
+  }
+  :root {
+    --navy: #16324f;
+    --navy-2: #1e4258;
+    --blue: #2456a6;
+    --gray-bg: #f2f4f7;
+    --gray-line: #dde3ea;
+    --ink: #22303e;
+    --green: #1c7c54;
+    --red: #b23a48;
+    --orange: #c07a2b;
+    --gold: #d4af37;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: '29LT Bukra', 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-style: italic;
+    font-weight: 700;
+    background: var(--gray-bg);
+    color: var(--ink);
+    line-height: 1.9;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  header.hero {
+    background: linear-gradient(135deg, var(--navy), var(--navy-2));
+    color: #fff; border-radius: 18px; padding: 36px 28px; margin-bottom: 28px;
+  }
+  header.hero h1 { font-size: 30px; letter-spacing: .5px; }
+  header.hero p { opacity: .85; margin-top: 10px; font-size: 15px; }
+  .brand-dot { display:inline-block; width:12px; height:12px; border-radius:50%; background: var(--gold); margin-left:8px; }
+
+  nav.toc {
+    background:#fff; border:1px solid var(--gray-line); border-radius:14px;
+    padding:18px 22px; margin-bottom:28px;
+  }
+  nav.toc b { color: var(--navy); }
+  nav.toc ol { margin: 8px 22px 0 0; }
+  nav.toc a { color: var(--blue); text-decoration:none; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  section.card {
+    background:#fff; border:1px solid var(--gray-line); border-radius:16px;
+    padding:26px 26px 30px; margin-bottom:24px;
+  }
+  section.card > h2 {
+    color: var(--navy); font-size:21px; margin-bottom:14px;
+    padding-bottom:10px; border-bottom:3px solid var(--navy);
+    display:flex; align-items:center; gap:10px;
+  }
+  .stepnum {
+    min-width:34px; height:34px; border-radius:10px; background:var(--navy);
+    color:#fff; display:inline-flex; align-items:center; justify-content:center;
+    font-size:17px;
+  }
+  h3.sub { color: var(--blue); font-size:16px; margin:18px 0 8px; }
+
+  .steps { counter-reset: st; }
+  .step {
+    position:relative; background: var(--gray-bg);
+    border:1px solid var(--gray-line); border-right:5px solid var(--blue);
+    border-radius:12px; padding:14px 52px 14px 16px; margin-bottom:12px;
+  }
+  .step::before {
+    counter-increment: st; content: counter(st);
+    position:absolute; right:12px; top:12px;
+    width:28px; height:28px; border-radius:8px;
+    background: var(--navy); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:14px;
+  }
+  .step b { color: var(--navy); }
+
+  table.legend { width:100%; border-collapse:collapse; margin-top:10px; }
+  table.legend th, table.legend td { border:1px solid var(--gray-line); padding:10px 12px; text-align:right; font-size:14px; }
+  table.legend th { background: var(--navy); color:#fff; }
+  .dot { display:inline-block; width:16px; height:16px; border-radius:50%; vertical-align:-3px; margin-left:8px; }
+
+  .note {
+    background:#fff8e6; border:1px solid #eedc9a; border-right:5px solid var(--gold);
+    border-radius:10px; padding:12px 16px; margin-top:14px; font-size:14px;
+  }
+  .ok { color: var(--green); } .bad { color: var(--red); }
+
+  .mock {
+    display:grid; grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
+    gap:12px; margin-top:14px;
+  }
+  .tbl-card {
+    background:#fff; border-radius:14px; padding:14px 10px; text-align:center;
+    border:1px solid var(--gray-line);
+  }
+  .tbl-card .n { font-size:24px; color:var(--ink); }
+  .tbl-card .tag { display:block; margin:6px auto 0; width:fit-content; padding:2px 10px; border-radius:99px; font-size:11px; color:#fff; }
+  .t-available { box-shadow: inset 0 0 0 3px rgba(28,124,84,.35); } .t-available .tag { background: var(--green); }
+  .t-occupied  { box-shadow: inset 0 0 0 3px rgba(178,58,72,.35); }  .t-occupied .tag { background: var(--red); }
+  .t-reserved  { box-shadow: inset 0 0 0 3px rgba(36,86,166,.35); }  .t-reserved .tag { background: var(--blue); }
+  .t-cleaning  { box-shadow: inset 0 0 0 3px rgba(192,122,43,.35); } .t-cleaning .tag { background: var(--orange); }
+
+  footer.sig { text-align:center; color:#7a8694; font-size:13px; margin-top:26px; }
+  #printBtn {
+    position:fixed; top:18px; left:18px; z-index:9;
+    background:var(--navy); color:#fff; border:none; cursor:pointer;
+    padding:10px 18px; border-radius:12px; font-family:inherit; font-size:14px;
+  }
+  @media print {
+    body { background:#fff; }
+    #printBtn { display:none; }
+    section.card, header.hero, nav.toc { break-inside: avoid; border-color:#ccc; }
+    .wrap { max-width:100%; padding:0; }
+  }
+</style>
+</head>
+<body>
+<button id="printBtn" onclick="window.print()">🖨 طباعة / حفظ PDF</button>
+
+<div class="wrap">
+
+  <header class="hero">
+    <h1>دليل استخدام نظام CrepettooPOS <span class="brand-dot"></span></h1>
+    <p>دليل مبسّط خطوة بخطوة للكاشير والنادل: إدارة الطاولات، تسجيل الطلبات، متابعتها لحظياً، وإتمام الدفع وطباعة الفاتورة.</p>
+  </header>
+
+  <nav class="toc">
+    <b>محتويات الدليل</b>
+    <ol>
+      <li><a href="#intro">مقدمة عن النظام</a></li>
+      <li><a href="#tables">شاشة الطاولات ودلالة الألوان</a></li>
+      <li><a href="#inspect">عرض تفاصيل الطلب (النافذة المنبثقة)</a></li>
+      <li><a href="#link">ربط طلب جديد بالطاولة خطوة بخطوة</a></li>
+      <li><a href="#pay">الدفع وتصفية الطاولة عند المغادرة</a></li>
+      <li><a href="#faq">أسئلة شائعة</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="card" id="intro">
+    <h2><span class="stepnum">١</span> مقدمة موجزة عن النظام</h2>
+    <p>
+      <b>CrepettooPOS</b> نظام نقاط بيع متكامل للمطاعم والمقاهي يعمل محلياً على جهاز الكاشير دون الحاجة إلى إنترنت.
+      يتيح النظام إدارة قائمة الطعام (أكثر من 110 صنفاً موزعة على 12 فئة)، وإدارة الطاولات لحظياً بين عدة شاشات،
+      وتسجيل الطلبات للطاولات أو للتيك أواي، وطباعة فواتير الزبائن وتذاكر المطبخ، إضافة إلى التقارير اليومية والصلاحيات المتعددة للمستخدمين.
+    </p>
+    <div class="note">
+      ✳ كل ما يسجَّل من طلبات يظهر <u>فوراً</u> على بقية الشاشات المتصلة بنفس الجهاز أو الشبكة المحلية — لا حاجة لتحديث الصفحة يدوياً.
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="card" id="tables">
+    <h2><span class="stepnum">٢</span> شاشة الطاولات ودلالة الألوان</h2>
+    <p>
+      من القائمة الجانبية اختر <b>«الطاولات»</b>. ستظهر كل الطاولات كبطاقات مرقمة، ولكل بطاقة لون إطار وشارة حالة تدل على وضعها الحالي:
+    </p>
+    <table class="legend">
+      <tr><th>اللون</th><th>الحالة</th><th>المعنى</th></tr>
+      <tr><td><span class="dot" style="background:var(--green)"></span><b class="ok">أخضر</b></td><td>متاحة</td><td>يمكن إجلس الزبون وفتح طلب جديد فوراً</td></tr>
+      <tr><td><span class="dot" style="background:var(--red)"></span><b class="bad">أحمر</b></td><td>مشغولة</td><td>هناك طلب مفتوح وغير مدفوع على هذه الطاولة</td></tr>
+      <tr><td><span class="dot" style="background:var(--blue)"></span><b style="color:var(--blue)">أزرق</b></td><td>محجوزة</td><td>محجوزة مسبقاً لزبون لاحق</td></tr>
+      <tr><td><span class="dot" style="background:var(--orange)"></span><b style="color:var(--orange)">برتقالي</b></td><td>تنظيف</td><td>خارج الخدمة مؤقتاً حتى انتهاء التنظيف</td></tr>
+    </table>
+    <div class="note">
+      🔄 <b>التحديث التلقائي:</b> بمجرد اختيار أي كاشير طاولةً لطلب جديد تتحول حالتها إلى «مشغولة» باللون الأحمر
+      تلقائياً وعلى جميع الشاشات في نفس اللحظة — ولا تعود خضراء إلا بعد تأكيد دفع طلبها من شاشة الطاولات.
+    </div>
+
+    <h3 class="sub">مثال بصري لشكل البطاقات</h3>
+    <div class="mock">
+      <div class="tbl-card t-available"><div class="n">1</div><span class="tag">متاحة</span></div>
+      <div class="tbl-card t-occupied"><div class="n">2</div><span class="tag">مشغولة</span></div>
+      <div class="tbl-card t-reserved"><div class="n">3</div><span class="tag">محجوزة</span></div>
+      <div class="tbl-card t-cleaning"><div class="n">4</div><span class="tag">تنظيف</span></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="card" id="inspect">
+    <h2><span class="stepnum">٣</span> عرض تفاصيل الطلب (النافذة المنبثقة)</h2>
+    <div class="steps">
+      <div class="step"><b>اضغط بطاقة الطاولة المشغولة (الحمراء).</b> ستفتح نافذة منبثقة تعرض «الطلب الحالي» لهذه الطاولة تحديداً — رقم الطلب، وقت فتحه، واسم الكاشير الذي سجّله.</div>
+      <div class="step"><b>راجع الأصناف:</b> قائمة بكل ما طُلب مع الكمية × سعر الوحدة والإجمالي الجزئي لكل سطر، وملاحظات الأصناف إن وجدت.</div>
+      <div class="step"><b>الإجمالي:</b> أسفل النافذة يظهر المجموع الكلي مستخرجاً من الأصناف الفعلية بعد الخصومات.</div>
+      <div class="step"><b>إضافة صنف أثناء الجلسة:</b> اضغط زر «إضافة صنف» داخل النافذة، ابحث عن الصنف واختره — يُضاف مباشرة للطلب ويُعاد حساب المجموع فوراً.</div>
+      <div class="step"><b>حذف صنف:</b> اضغط علامة ✗ بجانب الصنف المطلوب حذفه من الطلب.</div>
+      <div class="step"><b>تصفية الطاولة عند المغادرة:</b> بعد دفع الطلب (انظر القسم ٥) تتحرر الطاولة وتعود «متاحة» تلقائياً، أو يمكن ضبط حالتها يدوياً (تنظيف / محجوزة) من أزرار الحالة داخل النافذة.</div>
+    </div>
+    <div class="note">🔒 الطلب مرتبط برقم الطاولة نفسها وليس بشاشة بعينها — لن يظهر طلب الطاولة 1 أبداً على الطاولة 2 مهما كان عدد الكاشيرات المتصلين.</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="card" id="link">
+    <h2><span class="stepnum">٤</span> تسجيل طلب جديد وربطه بالطاولة</h2>
+    <div class="steps">
+      <div class="step">من القائمة الجانبية افتح <b>«نقطة البيع» (POS)</b>.</div>
+      <div class="step">اترك وضع <b>«تيك أواي»</b> مطفأً، ثم اختر <b>رقم الطاولة</b> من مربعات الطاولات الخضراء أعلى السلة. سيتحول لونها للأخضر المحدد ذهبياً.</div>
+      <div class="step">اضغط أصناف القائمة لإضافتها للسلة، وعدّل <b>الكمية</b> بـ + و −، ويمكن إضافة <b>خصم</b> أو <b>ملاحظة</b> لكل صنف (مثلاً: بدون سكر).</div>
+      <div class="step">اضغط زر <b>«إرسال للطاولة»</b>. بهذا يُسجَّل الطلب <u>بدون دفع</u>: الطاولة تصبح مشغولة (حمراء) ويبقى الطلب مفتوحاً لاحتساب أصناف إضافية لاحقاً.</div>
+      <div class="step">سيظهر إشعار «تم إرسال الطلب للطاولة»، وتُفرغ السلة لاستقبال طلب جديد.</div>
+    </div>
+    <div class="note">
+      💡 استخدم زر <b>«دفع»</b> فقط عندما يدفع الزبون فوراً (تيك أواي أو طلب خفيف) — فهو يسجّل الطلب ويسدّده ويطبعه دفعة واحدة.
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="card" id="pay">
+    <h2><span class="stepnum">٥</span> الدفع وتصفية الطاولة عند المغادرة</h2>
+    <div class="steps">
+      <div class="step">عند مغادرة الزبون، اضغط بطاقة طاولته الحمراء لتفتح نافذة «الطلب الحالي».</div>
+      <div class="step">راجع الأصناف والإجمالي النهائي، ثم اختر <b>طريقة الدفع</b>: نقدي / بطاقة / تحويل.</div>
+      <div class="step">اضغط زر <b>«تأكيد الدفع»</b> الأخضر. سيتم: تسديد الطلب، <b>تحرير الطاولة تلقائياً</b> (تعود خضراء «متاحة»)، و<b>طباعة الفاتورة</b> مع تذكرة المطبخ تلقائياً.</div>
+      <div class="step">إن لزم، اجعل الطاولة «تنظيف» من أزرار الحالة حتى جهوزية استقبال زبون جديد.</div>
+    </div>
+    <div class="note">🧾 كل عملية دفع تُسجَّل في التقارير اليومية فوراً، وتظهر في صفحة المبيعات بإمكانية الاسترجاع (Refund) لمدير النظام عند الحاجة.</div>
+  </section>
+
+  <!-- 6 -->
+  <section class="card" id="faq">
+    <h2><span class="stepnum">٦</span> أسئلة شائعة</h2>
+    <table class="legend">
+      <tr><th style="width:38%">الحالة</th><th>التصرف الصحيح</th></tr>
+      <tr><td>ضغطت «إرسال للطاولة» ولم تتغير لون الطاولة؟</td><td>انتظر ثانية؛ التحديث تلقائي. إن بقيت، افتح شاشة الطاولات من جديد — الطلب مسجّل بالتأكيد في النظام.</td></tr>
+      <tr><td>طاولة حمراء بلا زبون (طلب منسي/ملغى)؟</td><td>افتحها ← أدخل الطلب ← اطلب من المدير إلغاءه، فتتحرر الطاولة تلقائياً.</td></tr>
+      <tr><td>الزبون أضاف أصنافاً بعد الإرسال؟</td><td>افتح الطاولة ← «إضافة صنف» — دون إنشاء طلب جديد.</td></tr>
+      <tr><td>الطابعة لم تطبع؟</td><td>الفاتورة محفوظة إلكترونياً؛ يمكن إعادة الطباعة من صفحة المبيعات بالبحث برقم الطلب.</td></tr>
+      <tr><td>هل يتأثر الطلب إذا تغيّر سعر الصنف لاحقاً؟</td><td>لا — الطلب يحتفظ بسعر لحظة البيع كما هو مسجل.</td></tr>
+    </table>
+  </section>
+
+  <footer class="sig">
+    CrepettooPOS — دليل المستخدم · الإصدار 1.0 · للطباعة كـ PDF استخدم الزر أعلى الشاشة
+  </footer>
+</div>
+</body>
+</html>

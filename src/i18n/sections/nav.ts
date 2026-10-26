@@ -1,0 +1,47 @@
+export const ar: Record<string, string> = {
+  'nav.pos': 'نقطة البيع',
+  'nav.menu': 'قائمة الطعام',
+  'nav.tables': 'الطاولات',
+  'nav.kitchen': 'المطبخ',
+  'nav.reports': 'التقارير',
+  'nav.users': 'المستخدمين',
+  'nav.settings': 'الإعدادات',
+  'nav.ingredients': 'المشتريات',
+  'nav.sales': 'المبيعات',
+  'topbar.language': 'اللغة',
+  'topbar.logout': 'تسجيل الخروج',
+  'topbar.alerts': 'تنبيهات',
+  'topbar.clock': 'الساعة',
+};
+
+export const fr: Record<string, string> = {
+  'nav.pos': 'Point de vente',
+  'nav.menu': 'Menu',
+  'nav.tables': 'Tables',
+  'nav.kitchen': 'Cuisine',
+  'nav.reports': 'Rapports',
+  'nav.users': 'Utilisateurs',
+  'nav.settings': 'Paramètres',
+  'nav.ingredients': 'Achats',
+  'nav.sales': 'Ventes',
+  'topbar.language': 'Langue',
+  'topbar.logout': 'Déconnexion',
+  'topbar.alerts': 'Alertes',
+  'topbar.clock': 'Horloge',
+};
+
+export const en: Record<string, string> = {
+  'nav.pos': 'Point of Sale',
+  'nav.menu': 'Menu',
+  'nav.tables': 'Tables',
+  'nav.kitchen': 'Kitchen',
+  'nav.reports': 'Reports',
+  'nav.users': 'Users',
+  'nav.settings': 'Settings',
+  'nav.ingredients': 'Purchases',
+  'nav.sales': 'Sales',
+  'topbar.language': 'Language',
+  'topbar.logout': 'Logout',
+  'topbar.alerts': 'Alerts',
+  'topbar.clock': 'Clock',
+};
